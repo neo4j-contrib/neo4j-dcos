@@ -6,6 +6,9 @@
          "cpus":2,
          "mem":8000,
          "instances":1,
+         "ports":[
+            0, 0, 0, 0
+         ],
          "container":{
             "type":"DOCKER",
             "docker":{
@@ -25,7 +28,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.1:7473"
+                        "VIP_1":"10.0.0.1:7473"
                      }
                   },
                   {
@@ -33,7 +36,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.1:7687"
+                        "VIP_2":"10.0.0.1:7687"
                      }
                   },
                   {
@@ -41,7 +44,7 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.1:5000"
+                        "VIP_3":"10.0.0.1:5000"
                      }
                   }
                ],
@@ -89,6 +92,9 @@
          "cpus":2,
          "mem":8000,
          "instances":1,
+         "ports":[
+            0, 0, 0, 0
+         ],
          "container":{
             "type":"DOCKER",
             "docker":{
@@ -107,7 +113,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.2:7473"
+                        "VIP_1":"10.0.0.2:7473"
                      }
                   },
                   {
@@ -115,7 +121,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.2:7687"
+                        "VIP_2":"10.0.0.2:7687"
                      }
                   },
                   {
@@ -123,7 +129,7 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.2:5000"
+                        "VIP_3":"10.0.0.2:5000"
                      }
                   }
                ],

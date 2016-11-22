@@ -95,11 +95,11 @@
          "env":{
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
-            "NEO4J_causalClustering_expectedCoreClusterSize": "2",
+            "NEO4J_causalClustering_expectedCoreClusterSize": "3",
             "NEO4J_causalClustering_discoveryAdvertisedAddress": "7.4.7.1:5000",
             "NEO4J_causalClustering_transactionAdvertisedAddress": "7.4.7.1:6000",
             "NEO4J_causalClustering_raftAdvertisedAddress": "7.4.7.1:7000",
-            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.2:5000"
+            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.2:5000,7.4.7.3:5000"
          },
          "labels":{
             "HAPROXY_0_VHOST":"junterste-publicsl-1nbffyhpxqwj9-1893870134.us-west-2.elb.amazonaws.com",
@@ -200,11 +200,112 @@
          "env":{
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
-            "NEO4J_causalClustering_expectedCoreClusterSize": "2",
+            "NEO4J_causalClustering_expectedCoreClusterSize": "3",
             "NEO4J_causalClustering_discoveryAdvertisedAddress": "7.4.7.2:5000",
             "NEO4J_causalClustering_transactionAdvertisedAddress": "7.4.7.2:6000",
             "NEO4J_causalClustering_raftAdvertisedAddress": "7.4.7.2:7000",
-            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.1:5000"
+            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.1:5000,7.4.7.3:5000"
+         }
+      },
+      {
+         "id":"core3",
+         "cpus":2,
+         "mem":8000,
+         "instances":1,
+         "ports":[
+            0, 0, 0, 0, 0, 0
+         ],
+         "container":{
+            "type":"DOCKER",
+            "docker":{
+               "image":"neo4j/neo4j-experimental:3.1.0-M13-beta3-enterprise",
+               "network":"BRIDGE",
+               "portMappings":[
+                  {
+                     "containerPort":7474,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_0":"7.4.7.3:7474"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":7473,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_1":"7.4.7.3:7473"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":7687,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_2":"7.4.7.3:7687"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":5000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_3":"7.4.7.3:5000"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":6000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_4":"7.4.7.3:6000"
+                     }
+                  }
+                  ,
+                  {
+                     "hostPort":0,
+                     "containerPort":7000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_5":"7.4.7.3:7000"
+                     }
+                  }
+               ],
+               "volumes": [
+                  {
+                    "containerPath":"data",
+                    "mode":"RW",
+                    "persistent": {
+                      "type":"root",
+                      "size":1000
+                    }
+                  },
+                  {
+                    "containerPath": "/data",
+                    "hostPath": "data",
+                    "mode": "RW"
+                  }
+               ]
+            }
+         },
+         "healthChecks":[
+            {
+               "protocol":"HTTP",
+               "path":"/",
+               "portIndex":0,
+               "timeoutSeconds":10,
+               "gracePeriodSeconds":240,
+               "intervalSeconds":2,
+               "maxConsecutiveFailures":10
+            }
+         ],
+         "env":{
+            "NEO4J_AUTH":"none",
+            "NEO4J_dbms_mode": "CORE",
+            "NEO4J_causalClustering_expectedCoreClusterSize": "3",
+            "NEO4J_causalClustering_discoveryAdvertisedAddress": "7.4.7.3:5000",
+            "NEO4J_causalClustering_transactionAdvertisedAddress": "7.4.7.3:6000",
+            "NEO4J_causalClustering_raftAdvertisedAddress": "7.4.7.3:7000",
+            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.1:5000,7.4.7.2:5000"
          }
       }
    ]

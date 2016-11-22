@@ -7,7 +7,7 @@
          "mem":8000,
          "instances":1,
          "ports":[
-            0, 0, 0, 0
+            0, 0, 0, 0, 0, 0
          ],
          "container":{
             "type":"DOCKER",
@@ -20,7 +20,7 @@
                      "containerPort":7474,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.1:7474"
+                        "VIP_0":"7.4.7.1:7474"
                      }
                   },
                   {
@@ -28,7 +28,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_1":"10.0.0.1:7473"
+                        "VIP_1":"7.4.7.1:7473"
                      }
                   },
                   {
@@ -36,7 +36,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_2":"10.0.0.1:7687"
+                        "VIP_2":"7.4.7.1:7687"
                      }
                   },
                   {
@@ -44,7 +44,23 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_3":"10.0.0.1:5000"
+                        "VIP_3":"7.4.7.1:5000"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":6000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_4":"7.4.7.1:6000"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":7000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_5":"7.4.7.1:7000"
                      }
                   }
                ],
@@ -80,10 +96,13 @@
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
             "NEO4J_causalClustering_expectedCoreClusterSize": "2",
-            "NEO4J_causalClustering_initialDiscoveryMembers": "10.0.0.1:5000,10.0.0.2:5000"
+            "NEO4J_causalClustering_discoveryAdvertisedAddress": "7.4.7.1:5000",
+            "NEO4J_causalClustering_transactionAdvertisedAddress": "7.4.7.1:6000",
+            "NEO4J_causalClustering_raftAdvertisedAddress": "7.4.7.1:7000",
+            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.2:5000"
          },
          "labels":{
-            "HAPROXY_0_VHOST":"junterste-publicsl-12kmlldzoqdzk-1035600015.eu-central-1.elb.amazonaws.com",
+            "HAPROXY_0_VHOST":"junterste-publicsl-1nbffyhpxqwj9-1893870134.us-west-2.elb.amazonaws.com",
             "HAPROXY_GROUP":"external"
          }
       },
@@ -93,7 +112,7 @@
          "mem":8000,
          "instances":1,
          "ports":[
-            0, 0, 0, 0
+            0, 0, 0, 0, 0, 0
          ],
          "container":{
             "type":"DOCKER",
@@ -105,7 +124,7 @@
                      "containerPort":7474,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_0":"10.0.0.2:7474"
+                        "VIP_0":"7.4.7.2:7474"
                      }
                   },
                   {
@@ -113,7 +132,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_1":"10.0.0.2:7473"
+                        "VIP_1":"7.4.7.2:7473"
                      }
                   },
                   {
@@ -121,7 +140,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_2":"10.0.0.2:7687"
+                        "VIP_2":"7.4.7.2:7687"
                      }
                   },
                   {
@@ -129,7 +148,24 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_3":"10.0.0.2:5000"
+                        "VIP_3":"7.4.7.2:5000"
+                     }
+                  },
+                  {
+                     "hostPort":0,
+                     "containerPort":6000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_4":"7.4.7.2:6000"
+                     }
+                  }
+                  ,
+                  {
+                     "hostPort":0,
+                     "containerPort":7000,
+                     "protocol":"tcp",
+                     "labels":{
+                        "VIP_5":"7.4.7.2:7000"
                      }
                   }
                ],
@@ -165,7 +201,10 @@
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
             "NEO4J_causalClustering_expectedCoreClusterSize": "2",
-            "NEO4J_causalClustering_initialDiscoveryMembers": "10.0.0.1:5000,10.0.0.2:5000"
+            "NEO4J_causalClustering_discoveryAdvertisedAddress": "7.4.7.2:5000",
+            "NEO4J_causalClustering_transactionAdvertisedAddress": "7.4.7.2:6000",
+            "NEO4J_causalClustering_raftAdvertisedAddress": "7.4.7.2:7000",
+            "NEO4J_causalClustering_initialDiscoveryMembers": "7.4.7.1:5000"
          }
       }
    ]

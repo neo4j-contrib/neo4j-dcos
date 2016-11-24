@@ -16,7 +16,7 @@ export NEO4J_causalClustering_raftAdvertisedAddress=$ip":7000"
 sleep 15
 
 # calculate discovery members
-digs=`dig +short neo4j.marathon.containerip.dcos.thisdcos.directory`
+digs=`dig +short core-neo4j.marathon.containerip.dcos.thisdcos.directory`
 members=`echo $digs | sed -e "s/$ip //g" -e 's/ /:5000,/g'`":5000"
 export NEO4J_causalClustering_initialDiscoveryMembers=$members
 

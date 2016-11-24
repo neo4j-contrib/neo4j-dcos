@@ -6,9 +6,6 @@
          "cpus":2,
          "mem":8000,
          "instances":1,
-         "ports":[
-            0, 0, 0, 0, 0, 0
-         ],
          "container":{
             "type":"DOCKER",
             "docker":{
@@ -28,7 +25,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_1":"7.4.7.1:7473"
+                        "VIP_0":"7.4.7.1:7473"
                      }
                   },
                   {
@@ -36,7 +33,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_2":"7.4.7.1:7687"
+                        "VIP_0":"7.4.7.1:7687"
                      }
                   },
                   {
@@ -44,7 +41,7 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_3":"7.4.7.1:5000"
+                        "VIP_0":"7.4.7.1:5000"
                      }
                   },
                   {
@@ -52,7 +49,7 @@
                      "containerPort":6000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_4":"7.4.7.1:6000"
+                        "VIP_0":"7.4.7.1:6000"
                      }
                   },
                   {
@@ -60,7 +57,7 @@
                      "containerPort":7000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_5":"7.4.7.1:7000"
+                        "VIP_0":"7.4.7.1:7000"
                      }
                   }
                ],
@@ -81,17 +78,6 @@
                ]
             }
          },
-         "healthChecks":[
-            {
-               "protocol":"HTTP",
-               "path":"/",
-               "portIndex":0,
-               "timeoutSeconds":10,
-               "gracePeriodSeconds":240,
-               "intervalSeconds":2,
-               "maxConsecutiveFailures":10
-            }
-         ],
          "env":{
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
@@ -111,9 +97,6 @@
          "cpus":2,
          "mem":8000,
          "instances":1,
-         "ports":[
-            0, 0, 0, 0, 0, 0
-         ],
          "container":{
             "type":"DOCKER",
             "docker":{
@@ -132,7 +115,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_1":"7.4.7.2:7473"
+                        "VIP_0":"7.4.7.2:7473"
                      }
                   },
                   {
@@ -140,7 +123,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_2":"7.4.7.2:7687"
+                        "VIP_0":"7.4.7.2:7687"
                      }
                   },
                   {
@@ -148,7 +131,7 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_3":"7.4.7.2:5000"
+                        "VIP_0":"7.4.7.2:5000"
                      }
                   },
                   {
@@ -156,7 +139,7 @@
                      "containerPort":6000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_4":"7.4.7.2:6000"
+                        "VIP_0":"7.4.7.2:6000"
                      }
                   }
                   ,
@@ -165,7 +148,7 @@
                      "containerPort":7000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_5":"7.4.7.2:7000"
+                        "VIP_0":"7.4.7.2:7000"
                      }
                   }
                ],
@@ -186,17 +169,6 @@
                ]
             }
          },
-         "healthChecks":[
-            {
-               "protocol":"HTTP",
-               "path":"/",
-               "portIndex":0,
-               "timeoutSeconds":10,
-               "gracePeriodSeconds":240,
-               "intervalSeconds":2,
-               "maxConsecutiveFailures":10
-            }
-         ],
          "env":{
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",
@@ -212,9 +184,6 @@
          "cpus":2,
          "mem":8000,
          "instances":1,
-         "ports":[
-            0, 0, 0, 0, 0, 0
-         ],
          "container":{
             "type":"DOCKER",
             "docker":{
@@ -233,7 +202,7 @@
                      "containerPort":7473,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_1":"7.4.7.3:7473"
+                        "VIP_0":"7.4.7.3:7473"
                      }
                   },
                   {
@@ -241,7 +210,7 @@
                      "containerPort":7687,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_2":"7.4.7.3:7687"
+                        "VIP_0":"7.4.7.3:7687"
                      }
                   },
                   {
@@ -249,7 +218,7 @@
                      "containerPort":5000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_3":"7.4.7.3:5000"
+                        "VIP_0":"7.4.7.3:5000"
                      }
                   },
                   {
@@ -257,7 +226,7 @@
                      "containerPort":6000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_4":"7.4.7.3:6000"
+                        "VIP_0":"7.4.7.3:6000"
                      }
                   }
                   ,
@@ -266,7 +235,7 @@
                      "containerPort":7000,
                      "protocol":"tcp",
                      "labels":{
-                        "VIP_5":"7.4.7.3:7000"
+                        "VIP_0":"7.4.7.3:7000"
                      }
                   }
                ],
@@ -287,17 +256,6 @@
                ]
             }
          },
-         "healthChecks":[
-            {
-               "protocol":"HTTP",
-               "path":"/",
-               "portIndex":0,
-               "timeoutSeconds":10,
-               "gracePeriodSeconds":240,
-               "intervalSeconds":2,
-               "maxConsecutiveFailures":10
-            }
-         ],
          "env":{
             "NEO4J_AUTH":"none",
             "NEO4J_dbms_mode": "CORE",

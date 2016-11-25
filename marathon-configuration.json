@@ -30,13 +30,9 @@
         }
       },
       "env":{  
-        "NEO4J_AUTH":"none",
+        "NEO4J_AUTH":"neo4j/dcos",
         "NEO4J_dbms_mode":"CORE",
         "NEO4J_causalClustering_expectedCoreClusterSize":"3"
-      },
-      "labels":{  
-        "HAPROXY_0_VHOST":"junterste-publicsl-s90v9x8vnlfd-347566149.eu-central-1.elb.amazonaws.com",
-        "HAPROXY_GROUP":"external"
       },
       "ipAddress":{  
         "networkName":"dcos"
@@ -60,8 +56,8 @@
               "protocol":"tcp"
             },
             {  
-              "hostPort":80,
-              "containerPort":80,
+              "hostPort":7473,
+              "containerPort":7473,
               "protocol":"tcp"
             }
           ]

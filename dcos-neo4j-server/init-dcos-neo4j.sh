@@ -14,10 +14,13 @@ export NEO4J_causalClustering_raftAdvertisedAddress=$ip":7000"
 export NEO4J_dbms_advertisedAddress=$ip
 
 # try until DNS is ready
+url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
 for i in {1..15}
 do
-	digs=`dig +short core-neo4j.marathon.containerip.dcos.thisdcos.directory`
-	if [ ! -z $digs ]; then
+	digs=`dig +short $url`
+	if [ -z $digs ]; then
+		echo "no DNS recourd found for $url"
+	else
 		# calculate discovery members
 		members=`echo $digs | sed -e "s/$ip //g" -e 's/ /:5000,/g'`":5000"
 		echo "calculated initial discovery members: $members"
@@ -26,7 +29,6 @@ do
 	fi
    sleep 1
 done
-
 
 # do initial docker-entrypoint.sh
 /docker-entrypoint.sh neo4j

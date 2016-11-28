@@ -6,6 +6,7 @@
       "cpus":2,
       "mem":8000,
       "instances":3,
+      "disk": 2000,
       "container":{  
         "type":"DOCKER",
         "docker":{  
@@ -43,6 +44,10 @@
       "cpus":2,
       "mem":8000,
       "instances":0,
+      "disk": 2000,
+      "dependencies":[
+        "/neo4j/core"
+      ],
       "container":{  
         "type":"DOCKER",
         "docker":{  
@@ -79,6 +84,9 @@
       "cpus":1,
       "mem":1024,
       "instances":1,
+      "dependencies":[
+        "/neo4j/core"
+      ],
       "container":{  
         "type":"DOCKER",
         "docker":{  
@@ -98,6 +106,10 @@
             }
           ]
         }
+      },
+      "env":{  
+        "DCOS_NEO4J_USER":"neo4j",
+        "DCOS_NEO4J_PASS":"dcos"
       },
       "acceptedResourceRoles":[  
         "slave_public"

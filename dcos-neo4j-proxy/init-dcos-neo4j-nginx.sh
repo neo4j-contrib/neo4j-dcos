@@ -19,12 +19,13 @@ fi
 # try
 {
 	# find master and update nginx
-	response=`curl -s -k $auth -XPOST -H content-type:application/json -H accept:application/json https://$url/db/data/transaction/commit -d'{"statements":[{"statement":"CALL dbms.cluster.routing.getServers()"}]}' | jq '.results[].data[].row[]'`
+	response=`curl -s -k $auth -XPOST -H content-type:application/json -H accept:application/json https://$url:7473/db/data/transaction/commit -d'{"statements":[{"statement":"CALL dbms.cluster.routing.getServers()"}]}' | jq '.results[].data[].row[]'`
 	leader=`echo $response | jq -r '(.server[] | select(.role | contains("WRITE"))) | .addresses[0]'`
 	if [ ! -z $leader ]; then
 		# adapt proxy configuration to point only to master
-		cat $path | sed 's/http:.*$/http:\/\/$leader:7474\//g' > $path
-		cat $path | sed 's/https:.*$/https:\/\/$leader:7473\//g' > $path
+		echo `cat $backup | sed 's/http:.*$/http:\/\/$leader:7474\//g'`
+		cat $backup | sed 's/http:.*$/http:\/\/$leader:7474\//g' > $path
+		cat $path | sed 's/https:.*$/https:\/\/$leader:7473\//g' >> $path
 		service nginx reload
 	fi
 } || {

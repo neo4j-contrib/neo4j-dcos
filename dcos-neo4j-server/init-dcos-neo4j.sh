@@ -19,7 +19,7 @@ for i in {1..15}
 do
 	digs=`dig +short $url`
 	if [ -z $digs ]; then
-		echo "no DNS recourd found for $url"
+		echo "no DNS record found for $url"
 	else
 		# calculate discovery members
 		members=`echo $digs | sed -e "s/$ip //g" -e 's/ /:5000,/g'`":5000"

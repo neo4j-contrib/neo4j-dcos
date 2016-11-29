@@ -98,11 +98,6 @@
               "hostPort":7474,
               "containerPort":7474,
               "protocol":"tcp"
-            },
-            {  
-              "hostPort":7473,
-              "containerPort":7473,
-              "protocol":"tcp"
             }
           ]
         }

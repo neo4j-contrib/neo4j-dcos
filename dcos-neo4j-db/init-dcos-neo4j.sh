@@ -43,7 +43,7 @@ sleep 5
 
 # try until DNS is ready
 url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
-for i in {1..15}
+for i in {1..20}
 do
 	digs=`dig +short $url`
 	if [ -z "$digs" ]; then
@@ -55,7 +55,7 @@ do
 		export NEO4J_causalClustering_initialDiscoveryMembers=$members
 		break
 	fi
-   sleep 1
+   sleep 2
 done
 
 # do initial docker-entrypoint.sh

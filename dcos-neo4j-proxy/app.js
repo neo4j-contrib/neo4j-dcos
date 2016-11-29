@@ -1,8 +1,9 @@
-var express  = require('express');
-var app      = express();
+var express   = require('express');
+var app       = express();
 var httpProxy = require('http-proxy');
-var http = require('http');
-var apiProxy = httpProxy.createProxyServer();
+var http      = require('http');
+var dns 	  = require ('dns');
+var apiProxy  = httpProxy.createProxyServer();
 
 var configuredUrl = process.env.DCOS_NEO4J_DNS_ENTRY || "core-neo4j.marathon.containerip.dcos.thisdcos.directory";
 var dnsUrl = "http://" + configuredUrl + ":7474"
@@ -24,33 +25,48 @@ var options = {
 var concreteServer = dnsUrl;
 
 function updateUrl() {
-	var req = http.request(options, (res) => {
-		res.on("data", (chunk) => {
-			try {
+	try {
+		var req = http.request(options, (res) => {
+			res.on("data", (chunk) => {
+				console.log("cron response: " + chunk.toString());
 				var obj = JSON.parse(chunk.toString());
 				var url = obj.results[0].data[0].row[0];
 				if (url.startsWith("http")) {
-					concreteServer = chunk.toString();
+					console.log("updating proxy url to : " + url);
+					concreteServer = url;
 				} else {
 					throw "Not able to parse chunk";
 				}
-			} catch(e) {
-			  	console.log("Do not got the correct answer for updating leader http url, got:")
-			  	console.log(chunk.toString());
-			}
+			});
 		});
-	});
-	req.write('{"statements":[{"statement":"CALL dbms.cluster.overview() yield addresses, role where role = \"LEADER\" return head([a IN addresses where a starts with \"http:\"]) as http"}]}');
-	req.end();
-	setTimeout(updateUrl, 10000);
+		var query = {
+			statements:
+			[
+				{
+					statement: 'CALL dbms.cluster.overview() yield addresses, role where role = "LEADER" return head([a IN addresses where a starts with "http:"]) as http'
+				}
+			]
+		};
+		req.write(JSON.stringify(query));
+		req.end();
+	} catch(e) {
+		console.log("Unable to perform cron request to update leader url: " + e);
+	}
+	setTimeout(updateUrl, 25000);
 }
 
-updateUrl();
+setTimeout(updateUrl, 25000);
 
 console.log("initial leader http url: " + concreteServer);
 
 app.all("/*", function(req, res) {
-    apiProxy.web(req, res, {target: concreteServer});
+	dns.resolve4(configuredUrl, function(err, addresses) {
+		if (err) {
+			console.log("Could not proxy the following request to the host (" + concreteServer + "): " + err);
+		} else {
+			apiProxy.web(req, res, {target: concreteServer});
+		}
+	});
 });
 
 app.listen(7474);

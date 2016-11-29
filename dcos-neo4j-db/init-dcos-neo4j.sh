@@ -16,8 +16,9 @@ setting() {
 }
 
 # set heap based on marathon configuration, convert given double to integer
+# also remove at least 100mb of memory from the heap space
 mem=`echo $MARATHON_APP_RESOURCE_MEM | sed 's/\..*$//g'`
-export NEO4J_dbms_memory_heap_maxSize=$mem
+export NEO4J_dbms_memory_heap_maxSize=`expr $mem - 100`"m"
 
 # current workaround for the scenario when the user edits the app configuration via UI
 if [ -n "${NEO4J_DBMS_MODE:-}" ]; then

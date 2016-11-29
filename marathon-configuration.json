@@ -42,7 +42,7 @@
     {  
       "id":"replica",
       "cpus":2,
-      "mem":8000,
+      "mem":4000,
       "instances":0,
       "disk": 2000,
       "dependencies":[

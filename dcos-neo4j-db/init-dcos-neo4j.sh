@@ -15,9 +15,19 @@ setting() {
     fi
 }
 
-# set heap based on marathon configuration
-mem=`echo $MARATHON_APP_RESOURCE_MEM | sed -e 's/.0//g'`
+# set heap based on marathon configuration, convert given double to integer
+mem=`echo $MARATHON_APP_RESOURCE_MEM | sed 's/\..*$//g'`
 export NEO4J_dbms_memory_heap_maxSize=$mem
+
+# current workaround for the scenario when the user edits the app configuration via UI
+if [ -n "${NEO4J_DBMS_MODE:-}" ]; then
+    export NEO4J_dbms_mode=$NEO4J_DBMS_MODE
+fi
+
+# current workaround for the scenario when the user edits the app configuration via UI
+if [ -n "${NEO4J_CAUSALCLUSTERING_EXPECTEDCORECLUSTERSIZE:-}" ]; then
+    export NEO4J_causalClustering_expectedCoreClusterSize=$NEO4J_CAUSALCLUSTERING_EXPECTEDCORECLUSTERSIZE
+fi
 
 # calc public ip
 ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
@@ -31,12 +41,16 @@ export NEO4J_dbms_advertisedAddress=$ip
 # this should be removed when https://github.com/neo4j/docker-neo4j/pull/68 is merged
 setting "dbms.connectors.default_advertised_address" "$NEO4J_dbms_advertisedAddress"
 
+# wait 5 seconds for dns
+echo "waiting 5 seconds for dns"
+sleep 5
+
 # try until DNS is ready
 url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
 for i in {1..15}
 do
 	digs=`dig +short $url`
-	if [ -z $digs ]; then
+	if [ -z "$digs" ]; then
 		echo "no DNS record found for $url"
 	else
 		# calculate discovery members

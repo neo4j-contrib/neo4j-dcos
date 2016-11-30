@@ -25,6 +25,20 @@ if [ -n "${NEO4J_CAUSALCLUSTERING_EXPECTEDCORECLUSTERSIZE:-}" ]; then
     export NEO4J_causalClustering_expectedCoreClusterSize=$NEO4J_CAUSALCLUSTERING_EXPECTEDCORECLUSTERSIZE
 fi
 
+# current workaround for the scenario when the user edits the app configuration via UI
+if [ -n "${NEO4J_DBMS_MEMORY_HEAP_MAXSIZE:-}" ]; then
+    export NEO4J_dbms_memory_heap_maxSize=$NEO4J_DBMS_MEMORY_HEAP_MAXSIZE
+fi
+
+if [ -n "${NEO4J_dbms_memory_heap_maxSize:-}" ]; then
+    # if no heap space was explicitly configured, 
+    # set heap based on marathon configuration, convert given double to integer
+    mem=`echo $MARATHON_APP_RESOURCE_MEM | sed 's/\..*$//g'`
+    # and limit it to 75% of the container memory
+    export NEO4J_dbms_memory_heap_maxSize=$(($mem * 3 / 4))"m"
+fi
+
+
 # calc public ip
 ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
@@ -37,7 +51,7 @@ export NEO4J_dbms_advertisedAddress=$ip
 # this should be removed when https://github.com/neo4j/docker-neo4j/pull/68 is merged
 setting "dbms.connectors.default_advertised_address" "$NEO4J_dbms_advertisedAddress"
 
-# wait 5 seconds for dns
+# wait 5 seconds for dns to
 echo "waiting 5 seconds for dns"
 sleep 5
 

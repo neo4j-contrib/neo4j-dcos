@@ -1,0 +1,22 @@
+{
+  "packagingVersion": "3.0",
+  "name": "neo4j",
+  "version": "3.1-RCx",
+  "minDcosReleaseVersion" : "1.8",
+  "scm": "https://github.com/unterstein/dcos-neo4j",
+  "maintainer": "",
+  "website": "http://www.neo4j.com",
+  "framework": false,
+  "description": "",
+  "tags": [ "neo4j", "NoSQL", "data", "database", "graphs" ],
+  "preInstallNotes": "This DC/OS Service is currently EXPERIMENTAL. There may be bugs, incomplete features, incorrect documentation, or other discrepancies. Default credentials are neo4j/dcos. Please change them in advanced installation.",
+  "postInstallNotes": "",
+  "postUninstallNotes": "",
+  "licenses": [
+    {
+      "name": "Apache License, Version 2.0",
+      "url": "https://raw.githubusercontent.com/neo4j/docker-neo4j/master/LICENSE"
+    }
+  ],
+  "selected": false
+}

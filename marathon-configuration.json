@@ -37,7 +37,18 @@
       },
       "ipAddress":{  
         "networkName":"dcos"
-      }
+      },
+      "healthChecks":[
+        {
+          "protocol":"HTTP",
+          "path":"/",
+          "port":7474,
+          "timeoutSeconds":10,
+          "gracePeriodSeconds":240,
+          "intervalSeconds":10,
+          "maxConsecutiveFailures":10
+        }
+      ]
     },
     {  
       "id":"replica",
@@ -77,7 +88,18 @@
       },
       "ipAddress":{  
         "networkName":"dcos"
-      }
+      },
+      "healthChecks":[
+        {
+          "protocol":"HTTP",
+          "path":"/",
+          "port":7474,
+          "timeoutSeconds":10,
+          "gracePeriodSeconds":240,
+          "intervalSeconds":10,
+          "maxConsecutiveFailures":10
+        }
+      ]
     },
     {  
       "id":"proxy",
@@ -106,6 +128,17 @@
         "DCOS_NEO4J_USER":"neo4j",
         "DCOS_NEO4J_PASS":"dcos"
       },
+      "healthChecks":[
+        {
+          "protocol":"HTTP",
+          "path":"/",
+          "port":7474,
+          "timeoutSeconds":10,
+          "gracePeriodSeconds":240,
+          "intervalSeconds":10,
+          "maxConsecutiveFailures":10
+        }
+      ],
       "acceptedResourceRoles":[  
         "slave_public"
       ]

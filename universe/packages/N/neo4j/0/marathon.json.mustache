@@ -3,10 +3,10 @@
   "apps":[  
     {  
       "id":"core",
-      "cpus":{{core-cpus}},
-      "mem":{{core-mem}},
-      "instances":{{core-instances}},
-      "disk": {{core-disk}},
+      "cpus":{{service.core-cpus}},
+      "mem":{{service.core-mem}},
+      "instances":{{service.core-instances}},
+      "disk": {{service.core-disk}},
       "container":{  
         "type":"DOCKER",
         "docker":{  
@@ -18,7 +18,7 @@
               "mode":"RW",
               "persistent":{  
                 "type":"root",
-                "size":{{core-disk}}
+                "size":{{service.core-disk}}
               }
             },
             {  
@@ -30,12 +30,12 @@
         }
       },
       "env":{  
-        "NEO4J_AUTH":"{{auth-username}}/{{auth-password}}",
+        "NEO4J_AUTH":"{{service.auth-username}}/{{service.auth-password}}",
         "NEO4J_dbms_mode":"CORE",
-        "NEO4J_causalClustering_expectedCoreClusterSize":"{{core-expected-cluster-size}}"
+        "NEO4J_causalClustering_expectedCoreClusterSize":"{{service.core-expected-cluster-size}}"
       },
       "ipAddress":{  
-        "networkName":"{{network-name}}"
+        "networkName":"{{service.network-name}}"
       },
       "healthChecks":[
         {
@@ -51,10 +51,10 @@
     },
     {  
       "id":"replica",
-      "cpus":{{replica-cpus}},
-      "mem":{{replica-mem}},
-      "instances":{{replica-instances}},
-      "disk": {{replica-disk}},
+      "cpus":{{service.replica-cpus}},
+      "mem":{{service.replica-mem}},
+      "instances":{{service.replica-instances}},
+      "disk": {{service.replica-disk}},
       "dependencies":[
         "/neo4j/core"
       ],
@@ -69,7 +69,7 @@
               "mode":"RW",
               "persistent":{  
                 "type":"root",
-                "size":{{replica-disk}}
+                "size":{{service.replica-disk}}
               }
             },
             {  
@@ -81,11 +81,11 @@
         }
       },
       "env":{  
-        "NEO4J_AUTH":"{{auth-username}}/{{auth-password}}",
+        "NEO4J_AUTH":"{{service.auth-username}}/{{service.auth-password}}",
         "NEO4J_dbms_mode":"READ_REPLICA"
       },
       "ipAddress":{  
-        "networkName":"{{network-name}}"
+        "networkName":"{{service.network-name}}"
       },
       "healthChecks":[
         {

@@ -1,12 +1,9 @@
 {  
-  "id":"replica",
-  "cpus":{{neo4j.replica-cpus}},
-  "mem":{{neo4j.replica-mem}},
-  "instances":{{neo4j.replica-instances}},
-  "disk": {{neo4j.replica-disk}},
-  "dependencies":[
-    "/neo4j/core"
-  ],
+  "id":"/neo4j/replica",
+  "cpus":{{neo4j-replica.cpus}},
+  "mem":{{neo4j-replica.mem}},
+  "instances":{{neo4j-replica.instances}},
+  "disk": {{neo4j-replica.disk}},
   "container":{  
     "type":"DOCKER",
     "docker":{  
@@ -18,7 +15,7 @@
           "mode":"RW",
           "persistent":{  
             "type":"root",
-            "size":{{neo4j.replica-disk}}
+            "size":{{neo4j-replica.disk}}
           }
         },
         {  
@@ -30,11 +27,11 @@
     }
   },
   "env":{  
-    "NEO4J_AUTH":"{{neo4j.auth-username}}/{{neo4j.auth-password}}",
+    "NEO4J_AUTH":"{{neo4j-replica.auth-username}}/{{neo4j-replica.auth-password}}",
     "NEO4J_dbms_mode":"READ_REPLICA"
   },
   "ipAddress":{  
-    "networkName":"{{neo4j.network-name}}"
+    "networkName":"{{neo4j-replica.network-name}}"
   },
   "healthChecks":[
     {

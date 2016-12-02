@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "dcos-neo4j": "unterstein/dcos-neo4j:1.0.0-3.1-RC1"
+        "dcos-neo4j": "unterstein/dcos-neo4j-proxy:1.0.0"
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "neo4j": {
+    "neo4j-replica": {
       "description": "Neo4j specific configuration properties",
       "type": "object",
       "properties": {
@@ -15,28 +15,28 @@
           "type": "string",
           "default": "dcos"
         },
-        "replica-cpus": {
+        "cpus": {
           "description": "CPU shares allocated to one neo4j read replica instance.",
           "type": "number",
           "default": 2.0,
           "minimum": 0.5
         },
-        "replica-mem": {
+        "mem": {
           "description": "Memory [mb] allocated to one neo4j read replica instance.",
           "type": "number",
           "default": 4000.0,
           "minimum": 1000.0
         },
-        "replica-disk": {
+        "disk": {
           "description": "Disk size [mb] allocated to one neo4j read replica instance.",
           "type": "number",
           "default": 8000.0,
           "minimum": 1000.0
         },
-        "replica-instances": {
+        "instances": {
           "description": "Amount of neo4j read replica instances.",
           "type": "number",
-          "default": 0,
+          "default": 2,
           "minimum": 0
         },
         "network-name": {
@@ -48,15 +48,15 @@
       "required": [
         "auth-username",
         "auth-password",
-        "replica-cpus",
-        "replica-mem",
-        "replica-disk",
-        "replica-instances",
+        "cpus",
+        "mem",
+        "disk",
+        "instances",
         "network-name"
       ]
     }
   },
   "required": [
-    "neo4j"
+    "neo4j-replica"
   ]
 }

@@ -1,11 +1,8 @@
 {  
-  "id":"proxy",
+  "id":"/neo4j/proxy",
   "cpus":1,
   "mem":1024,
   "instances":1,
-  "dependencies":[
-    "/neo4j/core"
-  ],
   "container":{  
     "type":"DOCKER",
     "docker":{  
@@ -22,8 +19,8 @@
     }
   },
   "env":{  
-    "DCOS_NEO4J_USER":"{{neo4j.auth-username}}",
-    "DCOS_NEO4J_PASS":"{{neo4j.auth-password}}"
+    "DCOS_NEO4J_USER":"{{neo4j-proxy.auth-username}}",
+    "DCOS_NEO4J_PASS":"{{neo4j-proxy.auth-password}}"
   },
   "healthChecks":[
     {

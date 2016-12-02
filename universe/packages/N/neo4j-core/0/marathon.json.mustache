@@ -1,9 +1,9 @@
 {  
   "id":"neo4j/core",
-  "cpus":{{neo4j.core-cpus}},
-  "mem":{{neo4j.core-mem}},
-  "instances":{{neo4j.core-instances}},
-  "disk": {{neo4j.core-disk}},
+  "cpus":{{neo4j-core.cpus}},
+  "mem":{{neo4j-core.mem}},
+  "instances":{{neo4j-core.instances}},
+  "disk": {{neo4j-core.disk}},
   "container":{  
     "type":"DOCKER",
     "docker":{  
@@ -15,7 +15,7 @@
           "mode":"RW",
           "persistent":{  
             "type":"root",
-            "size":{{neo4j.core-disk}}
+            "size":{{neo4j-core.disk}}
           }
         },
         {  
@@ -27,12 +27,12 @@
     }
   },
   "env":{  
-    "NEO4J_AUTH":"{{neo4j.auth-username}}/{{neo4j.auth-password}}",
+    "NEO4J_AUTH":"{{neo4j-core.auth-username}}/{{neo4j-core.auth-password}}",
     "NEO4J_dbms_mode":"CORE",
-    "NEO4J_causalClustering_expectedCoreClusterSize":"{{neo4j.core-expected-cluster-size}}"
+    "NEO4J_causalClustering_expectedCoreClusterSize":"{{neo4j-core.expected-cluster-size}}"
   },
   "ipAddress":{  
-    "networkName":"{{neo4j.network-name}}"
+    "networkName":"{{neo4j-core.network-name}}"
   },
   "healthChecks":[
     {

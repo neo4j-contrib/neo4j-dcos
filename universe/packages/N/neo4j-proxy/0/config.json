@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "neo4j": {
+    "neo4j-proxy": {
       "description": "Neo4j specific configuration properties",
       "type": "object",
       "properties": {
@@ -18,21 +18,11 @@
       },
       "required": [
         "auth-username",
-        "auth-password",
-        "core-cpus",
-        "core-mem",
-        "core-disk",
-        "core-instances",
-        "core-expected-cluster-size",
-        "replica-cpus",
-        "replica-mem",
-        "replica-disk",
-        "replica-instances",
-        "network-name"
+        "auth-password"
       ]
     }
   },
   "required": [
-    "neo4j"
+    "neo4j-proxy"
   ]
 }

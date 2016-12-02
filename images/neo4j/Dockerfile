@@ -1,4 +1,4 @@
-FROM neo4j/neo4j-experimental:3.1.0-M13-beta3-enterprise
+FROM neo4j/neo4j-experimental:3.1.0-RC1-enterprise
 
 MAINTAINER Johannes Unterstein <junterstein@mesosphere.io>
 

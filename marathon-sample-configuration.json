@@ -10,7 +10,7 @@
       "container":{  
         "type":"DOCKER",
         "docker":{  
-          "image":"unterstein/dcos-neo4j:1.0.0-3.1-RC1",
+          "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
           "network":"USER",
           "forcePullImage":true,
           "volumes":[  
@@ -62,7 +62,7 @@
       "container":{  
         "type":"DOCKER",
         "docker":{  
-          "image":"unterstein/dcos-neo4j:1.0.0-3.1-RC1",
+          "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
           "network":"USER",
           "forcePullImage":true,
           "volumes":[  
@@ -112,7 +112,7 @@
       "container":{  
         "type":"DOCKER",
         "docker":{  
-          "image":"unterstein/dcos-neo4j-proxy:1.0.0",
+          "image":"neo4j/neo4j-dcos-proxy:1.0.0",
           "forcePullImage":true,
           "network":"BRIDGE",
           "portMappings":[  

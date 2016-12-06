@@ -32,7 +32,7 @@ Go to the universe and install the `neo4j` or do `dcos package install neo4j`. T
 auth-username=neo4j
 auth-password=dcos
 cpus(shares)=2
-mem=8000
+mem=4000
 disk=8000
 instances=3
 expected-cluster-size=3

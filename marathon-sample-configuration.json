@@ -9,25 +9,25 @@
       "disk": 2000,
       "container":{  
         "type":"DOCKER",
+        "volumes":[  
+          {  
+            "containerPath":"data",
+            "mode":"RW",
+            "persistent":{  
+              "type":"root",
+              "size":2000
+            }
+          },
+          {  
+            "containerPath":"/data",
+            "hostPath":"data",
+            "mode":"RW"
+          }
+        ],
         "docker":{  
           "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
           "network":"USER",
-          "forcePullImage":true,
-          "volumes":[  
-            {  
-              "containerPath":"data",
-              "mode":"RW",
-              "persistent":{  
-                "type":"root",
-                "size":2000
-              }
-            },
-            {  
-              "containerPath":"/data",
-              "hostPath":"data",
-              "mode":"RW"
-            }
-          ]
+          "forcePullImage":true
         }
       },
       "env":{  
@@ -61,25 +61,25 @@
       ],
       "container":{  
         "type":"DOCKER",
+        "volumes":[  
+          {  
+            "containerPath":"data",
+            "mode":"RW",
+            "persistent":{  
+              "type":"root",
+              "size":2000
+            }
+          },
+          {  
+            "containerPath":"/data",
+            "hostPath":"data",
+            "mode":"RW"
+          }
+        ],
         "docker":{  
           "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
           "network":"USER",
-          "forcePullImage":true,
-          "volumes":[  
-            {  
-              "containerPath":"data",
-              "mode":"RW",
-              "persistent":{  
-                "type":"root",
-                "size":2000
-              }
-            },
-            {  
-              "containerPath":"/data",
-              "hostPath":"data",
-              "mode":"RW"
-            }
-          ]
+          "forcePullImage":true
         }
       },
       "env":{  

@@ -59,6 +59,14 @@ setTimeout(updateUrl, 25000);
 
 console.log("initial leader http url: " + concreteServer);
 
+app.all("/", function(req, res) {
+	var response = {
+		management: concreteServer + "/db/manage/",
+		data: concreteServer + "/db/data/"
+	};
+	res.send(JSON.stringify(response));
+});
+
 app.all("/*", function(req, res) {
 	dns.resolve4(configuredUrl, function(err, addresses) {
 		if (err) {

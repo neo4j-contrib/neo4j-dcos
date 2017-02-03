@@ -88,6 +88,33 @@ To access your neo4j cluster from outside the DC/OC cluster, you need to install
 To run the actual Neo4j cluster, one image is used: `neo4j/neo4j-dcos:1.0.0-3.1-RC1`
 Both, `core` and `read replica` installations use this images and only have separate environment variable configuration.
 
+
+## Connect example load generator
+In order to generate some load on the newly deployed neo4j causal cluster, you could use the neo4j-twitter-load example, developed by Michael Hunger. You can find the source code [here](https://github.com/jexp/neo4j-twitter-load). In order to have an easy deployment, you can use the packaged docker-image and the marathon configuration shown below. You can copy this JSON file and paste it to DC/OS in the service section.
+
+```
+{
+  "id": "/neo4j-twitter-load",
+  "cmd": null,
+  "env": {
+    "NEO4J_BOLT_URL": "bolt://neo4j:dcos@core-neo4j.marathon.containerip.dcos.thisdcos.directory:7687",
+    "CONCURRENCY": "4",
+    "MAX_OPERATIONS": "10000"
+  },
+  "instances": 1,
+  "cpus": 1,
+  "mem": 1000,
+  "disk": 500,
+  "container": {
+    "docker": {
+      "image": "unterstein/neo4j-twitter-load",
+      "forcePullImage": true
+    }
+  }
+}
+```
+
+
 ## Release
 To build a release, do for example:
 

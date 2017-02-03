@@ -11,7 +11,7 @@ In remainder of this section we will provide an overview of how causal clusterin
 
 From an operational point of view, it is useful to view the cluster as being composed from its two different roles: Core and Read replica.
 
-![alt text](http://neo4j.com/docs/operations-manual/beta/images/causal-clustering.png "causal clustering")
+![alt text](http://neo4j.com/docs/operations-manual/current/images/causal-clustering.png "causal clustering")
 
 The two roles are foundational in any production deployment but are managed at different scales from one another and undertake different roles in managing the fault tolerance and scalability of the overall cluster.
 

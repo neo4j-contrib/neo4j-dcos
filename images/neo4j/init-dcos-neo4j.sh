@@ -15,6 +15,21 @@ setting() {
     fi
 }
 
+extract_app_id() {
+    # calculating dns name for service discovery, see https://docs.mesosphere.com/1.8/usage/service-discovery/dns-overview/
+    parts=$(echo "$1" | tr "/" " ")
+
+    # join the array together again by `-` as separator
+    result=""
+    separator=""
+    for part in $parts
+    do
+        result="$part$separator$result"
+        separator="-"
+    done
+    echo "${result}"
+}
+
 # current workaround for the scenario when the user edits the app configuration via UI
 if [ -n "${NEO4J_DBMS_MODE:-}" ]; then
     export NEO4J_dbms_mode=$NEO4J_DBMS_MODE
@@ -55,8 +70,24 @@ setting "dbms.connectors.default_advertised_address" "$NEO4J_dbms_advertisedAddr
 echo "waiting 5 seconds for dns"
 sleep 5
 
+if [ "${NEO4J_dbms_mode:-}" == "CORE" ]; then
+    echo "Calculating DNS name of CORE members for core"
+    result=$(extract_app_id "${MARATHON_APP_ID}")
+
+    url="$result.marathon.containerip.dcos.thisdcos.directory"
+else
+    # Calculation for READ_REPLICATE members
+    if [ -n "${DCOS_NEO4J_CORE_APP_ID:-}" ]; then
+        echo "Calculating DNS name of CORE members for replica"
+        url=$(extract_app_id "${DCOS_NEO4J_CORE_APP_ID}")
+    else
+        echo "Using ENV DCOS_NEO4J_DNS_ENTRY '${DCOS_NEO4J_DNS_ENTRY}' or using default"
+        url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
+    fi
+fi
+
 # try until DNS is ready
-url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
+echo "URL using for service discovery: ${url}"
 for i in {1..20}
 do
 	digs=`dig +short $url`
@@ -65,7 +96,7 @@ do
 	else
 		# calculate discovery members
 		members=`echo $digs | sed -e "s/$ip //g" -e 's/ /:5000,/g'`":5000"
-		echo "calculated initial discovery members: $members"
+		echo "calculated initial discovery members: ${members}"
 		export NEO4J_causalClustering_initialDiscoveryMembers=$members
 		break
 	fi

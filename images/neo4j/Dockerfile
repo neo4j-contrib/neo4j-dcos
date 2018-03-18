@@ -1,4 +1,4 @@
-FROM neo4j:3.1.2-enterprise
+FROM neo4j:3.3.3-enterprise
 
 RUN apk add -U bind-tools && rm -f /var/cache/apk/*
 

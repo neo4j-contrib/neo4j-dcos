@@ -1,20 +1,5 @@
 #!/bin/bash -eu
 
-# this should be removed when https://github.com/neo4j/docker-neo4j/pull/68 is merged
-setting() {
-    setting="${1}"
-    value="${2}"
-    file="neo4j.conf"
-
-    if [ -n "${value}" ]; then
-        if grep -q -F "${setting}=" conf/"${file}"; then
-            sed --in-place "s|.*${setting}=.*|${setting}=${value}|" conf/"${file}"
-        else
-            echo "${setting}=${value}" >>conf/"${file}"
-        fi
-    fi
-}
-
 extract_app_id() {
     # calculating dns name for service discovery, see https://docs.mesosphere.com/1.8/usage/service-discovery/dns-overview/
     parts=$(echo "$1" | tr "/" " ")
@@ -61,10 +46,7 @@ ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 export NEO4J_causalClustering_discoveryAdvertisedAddress=$ip":5000"
 export NEO4J_causalClustering_transactionAdvertisedAddress=$ip":6000"
 export NEO4J_causalClustering_raftAdvertisedAddress=$ip":7000"
-export NEO4J_dbms_advertisedAddress=$ip
-
-# this should be removed when https://github.com/neo4j/docker-neo4j/pull/68 is merged
-setting "dbms.connectors.default_advertised_address" "$NEO4J_dbms_advertisedAddress"
+export NEO4J_dbms_connector_bolt_advertised__address=$ip":7687"
 
 # wait 5 seconds for dns to
 echo "waiting 5 seconds for dns"

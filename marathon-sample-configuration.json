@@ -25,7 +25,7 @@
           }
         ],
         "docker":{  
-          "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
+          "image":"neo4j/neo4j-dcos:1.0.1-3.3.3",
           "network":"USER",
           "forcePullImage":true
         }
@@ -33,7 +33,8 @@
       "env":{  
         "NEO4J_AUTH":"neo4j/dcos",
         "NEO4J_dbms_mode":"CORE",
-        "NEO4J_causalClustering_expectedCoreClusterSize":"3"
+        "NEO4J_causalClustering_expectedCoreClusterSize":"3",
+        "NEO4J_ACCEPT_LICENSE_AGREEMENT":"yes"
       },
       "ipAddress":{  
         "networkName":"dcos"
@@ -77,14 +78,15 @@
           }
         ],
         "docker":{  
-          "image":"neo4j/neo4j-dcos:1.0.0-3.1-RC1",
+          "image":"neo4j/neo4j-dcos:1.0.1-3.3.3",
           "network":"USER",
           "forcePullImage":true
         }
       },
       "env":{  
         "NEO4J_AUTH":"neo4j/dcos",
-        "NEO4J_dbms_mode":"READ_REPLICA"
+        "NEO4J_dbms_mode":"READ_REPLICA",
+        "NEO4J_ACCEPT_LICENSE_AGREEMENT":"yes"
       },
       "ipAddress":{  
         "networkName":"dcos"
@@ -112,7 +114,7 @@
       "container":{  
         "type":"DOCKER",
         "docker":{  
-          "image":"neo4j/neo4j-dcos-proxy:1.0.0",
+          "image":"neo4j/neo4j-dcos-proxy:1.0.1",
           "forcePullImage":true,
           "network":"BRIDGE",
           "portMappings":[  

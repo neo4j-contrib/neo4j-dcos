@@ -14,7 +14,7 @@ var pass = process.env.DCOS_NEO4J_PASS
 var auth = (user != undefined && pass != undefined) ? (user + ":" + pass) : "";
 
 var options = {
-	host: "core-neo4j.marathon.containerip.dcos.thisdcos.directory",
+	host: configuredUrl,
 	path: "/db/data/transaction/commit",
 	method: "POST",
 	port: 7474,

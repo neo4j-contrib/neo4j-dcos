@@ -1,6 +1,6 @@
 FROM node
 
-RUN npm install --save express http-proxy
+RUN npm install --save express http-proxy tcp-proxy
 
 ADD app.js /app.js
 

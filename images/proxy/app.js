@@ -1,9 +1,11 @@
 var express   = require('express');
 var app       = express();
 var httpProxy = require('http-proxy');
+var tcpProxy  = require('tcp-proxy');
 var http      = require('http');
-var dns 	  = require ('dns');
+var dns       = require ('dns');
 var apiProxy  = httpProxy.createProxyServer();
+var net       = require('net')
 
 var configuredUrl = process.env.DCOS_NEO4J_DNS_ENTRY || "core-neo4j.marathon.containerip.dcos.thisdcos.directory";
 var dnsUrl = "http://" + configuredUrl + ":7474"
@@ -23,6 +25,12 @@ var options = {
 	auth: auth
 };
 var concreteServer = dnsUrl;
+var concreteBolt = {
+  target: {
+    host: "core-neo4j.marathon.containerip.dcos.thisdcos.directory",
+    port: 7687
+  }
+}
 
 function updateUrl() {
 	try {
@@ -35,7 +43,21 @@ function updateUrl() {
 					console.log("updating proxy url to : " + url);
 					concreteServer = url;
 				} else {
-					throw "Not able to parse chunk";
+					throw "Not able to parse chunk for http";
+				}
+
+				var url2 = obj.results[0].data[0].row[1];
+				if (url2.startsWith("bolt")) {
+					var targetUrl = url2.substring(url2.lastIndexOf("/") + 1, url2.lastIndexOf(":"));
+					console.log("updating bolt url to : " + targetUrl);
+					concreteBolt = {
+						target: {
+							host: targetUrl,
+							port: 7687
+						}
+					}
+				} else {
+					throw "Not able to parse chunk for bolt";
 				}
 			});
 		});
@@ -43,7 +65,7 @@ function updateUrl() {
 			statements:
 			[
 				{
-					statement: 'CALL dbms.cluster.overview() yield addresses, role where role = "LEADER" return head([a IN addresses where a starts with "http:"]) as http'
+					statement: 'CALL dbms.cluster.overview() yield addresses, role where role = "LEADER" return head([a IN addresses where a starts with "http:"]) as http, head([a IN addresses where a starts with "bolt:"]) as bolt'
 				}
 			]
 		};
@@ -61,8 +83,9 @@ console.log("initial leader http url: " + concreteServer);
 
 app.all("/", function(req, res) {
 	var response = {
-		management: concreteServer + "/db/manage/",
-		data: concreteServer + "/db/data/"
+		management: req.protocol + "http://" + req.hostname + ":7474/db/manage/",
+		data: req.protocol + "://" + req.hostname + ":7474/db/data/",
+		bolt: "bolt://" + req.hostname + ":7687"
 	};
 	res.send(JSON.stringify(response));
 });
@@ -77,4 +100,16 @@ app.all("/*", function(req, res) {
 	});
 });
 
-app.listen(7474);
+var server = net.createServer(requestHandler);
+
+var proxy = tcpProxy(concreteBolt);
+proxy.on('error', server.emit.bind(server, 'error'));
+
+function requestHandler(socket) {
+  proxy.proxy(socket, concreteBolt);
+}
+
+console.log("Starting http server...")
+app.listen(7474); 
+console.log("Starting tcp server...")
+server.listen(7687);

@@ -1,20 +1,5 @@
 #!/bin/bash -eu
 
-extract_app_id() {
-    # calculating dns name for service discovery, see https://docs.mesosphere.com/1.8/usage/service-discovery/dns-overview/
-    parts=$(echo "$1" | tr "/" " ")
-
-    # join the array together again by `-` as separator
-    result=""
-    separator=""
-    for part in $parts
-    do
-        result="$part$separator$result"
-        separator="-"
-    done
-    echo "${result}"
-}
-
 # current workaround for the scenario when the user edits the app configuration via UI
 if [ -n "${NEO4J_DBMS_MODE:-}" ]; then
     export NEO4J_dbms_mode=$NEO4J_DBMS_MODE
@@ -39,51 +24,43 @@ if [ -n "${NEO4J_dbms_memory_heap_maxSize:-}" ]; then
 fi
 
 
-# calc public ip
-ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+dns_suffix=".${FRAMEWORK_NAME}.autoip.dcos.thisdcos.directory"
+own_name="${TASK_NAME}${dns_suffix}"
+echo "Own dns name ${own_name}"
+
 
 # exporting port stuff
-export NEO4J_causalClustering_discoveryAdvertisedAddress=$ip":5000"
-export NEO4J_causalClustering_transactionAdvertisedAddress=$ip":6000"
-export NEO4J_causalClustering_raftAdvertisedAddress=$ip":7000"
-export NEO4J_dbms_connector_bolt_advertised__address=$ip":7687"
+export NEO4J_causalClustering_discoveryAdvertisedAddress="${own_name}:5000"
+export NEO4J_causalClustering_transactionAdvertisedAddress="${own_name}:6000"
+export NEO4J_causalClustering_raftAdvertisedAddress="${own_name}:7000"
+export NEO4J_dbms_connector_bolt_advertised__address="${own_name}:7687"
 
-# wait 5 seconds for dns to
-echo "waiting 5 seconds for dns"
+echo "sleep some time"
 sleep 5
 
-if [ "${NEO4J_dbms_mode:-}" == "CORE" ]; then
-    echo "Calculating DNS name of CORE members for core"
-    result=$(extract_app_id "${MARATHON_APP_ID}")
-
-    url="$result.marathon.containerip.dcos.thisdcos.directory"
-else
-    # Calculation for READ_REPLICATE members
-    if [ -n "${DCOS_NEO4J_CORE_APP_ID:-}" ]; then
-        echo "Calculating DNS name of CORE members for replica"
-        url=$(extract_app_id "${DCOS_NEO4J_CORE_APP_ID}")
-    else
-        echo "Using ENV DCOS_NEO4J_DNS_ENTRY '${DCOS_NEO4J_DNS_ENTRY}' or using default"
-        url="${DCOS_NEO4J_DNS_ENTRY:-core-neo4j.marathon.containerip.dcos.thisdcos.directory}"
-    fi
-fi
-
-# try until DNS is ready
-echo "URL using for service discovery: ${url}"
-for i in {1..20}
+# discover more members
+members=""
+separator=""
+for (( i=0; i<NEO4J_causalClustering_expectedCoreClusterSize; i++ ))
 do
-	digs=`dig +short $url`
-	if [ -z "$digs" ]; then
-		echo "no DNS record found for $url"
-	else
-		# calculate discovery members
-		members=`echo $digs | sed -e "s/$ip //g" -e 's/ /:5000,/g'`":5000"
-		echo "calculated initial discovery members: ${members}"
-		export NEO4J_causalClustering_initialDiscoveryMembers=$members
-		break
-	fi
-   sleep 2
+    check_name="neo4j-${i}-node${dns_suffix}"
+    if [[ "${own_name}" != "${check_name}" ]]; then
+        for i in {1..20}
+        do
+            digs=`dig +short $check_name`
+            if [ -z "$digs" ]; then
+                echo "no DNS record found for $check_name in try $i"
+            else
+                members="${members}${separator}${digs}:5000"
+                separator=","
+                break
+            fi
+        done
+    fi
 done
+
+echo "calculated initial discovery members: ${members}"
+export NEO4J_causalClustering_initialDiscoveryMembers=$members
 
 # do initial docker-entrypoint.sh
 /docker-entrypoint.sh neo4j

@@ -50,6 +50,7 @@ do
             digs=`dig +short $check_name`
             if [ -z "$digs" ]; then
                 echo "no DNS record found for $check_name in try $inner"
+                sleep 3
             else
                 if [[ $members != *"${digs}"* ]]; then
                     members="${members}${separator}${digs}:5000"

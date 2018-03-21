@@ -41,7 +41,7 @@ sleep 5
 # discover more members
 members=""
 separator=""
-for (( i=0; i<NEO4J_causalClustering_expectedCoreClusterSize; i++ ))
+for (( i=0; i<=NEO4J_causalClustering_expectedCoreClusterSize; i++ ))
 do
     check_name="neo4j-${i}-node${dns_suffix}"
     if [[ "${own_name}" != "${check_name}" ]]; then

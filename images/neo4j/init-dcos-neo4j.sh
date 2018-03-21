@@ -30,10 +30,10 @@ echo "Own dns name ${own_name}"
 
 
 # exporting port stuff
-export NEO4J_causalClustering_discoveryAdvertisedAddress="${own_name}:5000"
-export NEO4J_causalClustering_transactionAdvertisedAddress="${own_name}:6000"
-export NEO4J_causalClustering_raftAdvertisedAddress="${own_name}:7000"
-export NEO4J_dbms_connector_bolt_advertised__address="${own_name}:7687"
+export NEO4J_causalClustering_discoveryAdvertisedAddress="${MESOS_CONTAINER_IP}:5000"
+export NEO4J_causalClustering_transactionAdvertisedAddress="${MESOS_CONTAINER_IP}:6000"
+export NEO4J_causalClustering_raftAdvertisedAddress="${MESOS_CONTAINER_IP}:7000"
+export NEO4J_dbms_connector_bolt_advertised__address="${MESOS_CONTAINER_IP}:7687"
 
 echo "sleep some time"
 sleep 5
@@ -45,15 +45,16 @@ for (( i=0; i<NEO4J_causalClustering_expectedCoreClusterSize; i++ ))
 do
     check_name="neo4j-${i}-node${dns_suffix}"
     if [[ "${own_name}" != "${check_name}" ]]; then
-        for i in {1..20}
+        for inner in {1..20}
         do
             digs=`dig +short $check_name`
             if [ -z "$digs" ]; then
-                echo "no DNS record found for $check_name in try $i"
+                echo "no DNS record found for $check_name in try $inner"
             else
-                members="${members}${separator}${digs}:5000"
-                separator=","
-                break
+                if [[ $members != *"${digs}"* ]]; then
+                    members="${members}${separator}${digs}:5000"
+                    separator=","
+                fi
             fi
         done
     fi
